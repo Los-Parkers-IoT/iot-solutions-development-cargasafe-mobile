@@ -1,45 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({Key? key}) : super(key: key);
+class NewPasswordScreen extends StatefulWidget {
+  const NewPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<OtpVerificationPage> createState() => _OtpVerificationPageState();
+  State<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
-class _OtpVerificationPageState extends State<OtpVerificationPage> {
-  final List<TextEditingController> _controllers = List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+class _NewPasswordScreenState extends State<NewPasswordScreen> {
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _handleVerify() {
-    String code = _controllers.map((c) => c.text).join();
-    if (code.length == 6) {
-      Navigator.pushNamed(context, '/new-password');
-    } else {
+  void _handleReset() {
+    if (_newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter the complete 6-digit code')),
+        SnackBar(content: Text('Passwords do not match')),
       );
+      return;
     }
-  }
 
-  void _onKeyDown(int index, String value) {
-    if (value.isNotEmpty) {
-      if (index < 5) {
-        _focusNodes[index + 1].requestFocus();
-      }
+    if (_newPasswordController.text.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password must be at least 6 characters')),
+      );
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Password reset successfully!')),
+    );
+
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   @override
@@ -110,10 +108,10 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               ],
             ),
             SizedBox(height: 80),
-            Text('Verify your\nidentity', style: TextStyle(fontSize: 42, fontWeight: FontWeight.w700, color: Colors.white, height: 1.2)),
+            Text('Almost there!', style: TextStyle(fontSize: 42, fontWeight: FontWeight.w700, color: Colors.white, height: 1.2)),
             SizedBox(height: 28),
             Text(
-              "We've sent a verification code to your email. Please enter it to continue with the password recovery process.",
+              'Create a strong and secure password for your account. Make sure to follow all security requirements.',
               style: TextStyle(fontSize: 22, color: Colors.white, height: 1.65),
             ),
           ],
@@ -132,7 +130,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               InkWell(
-                onTap: () => Navigator.pop(context),
+                onTap: () => Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -144,70 +142,63 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               ),
               SizedBox(height: 24),
 
-              Text('Verify OTP Code', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: Colors.black), textAlign: TextAlign.center),
+              Text('Create New Password', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: Colors.black), textAlign: TextAlign.center),
               SizedBox(height: 8),
               Text(
-                "We've sent a 6-digit verification code to your email. Please enter it below.",
+                "Please enter your new password. Make sure it's strong and secure.",
                 style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 32),
 
-              // OTP Input Fields
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(6, (index) {
-                  return SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: TextField(
-                      controller: _controllers[index],
-                      focusNode: _focusNodes[index],
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(
-                        counterText: '',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey[400]!)),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Colors.grey[400]!)),
-                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: Color(0xFFFF9333), width: 2)),
-                      ),
-                      onChanged: (value) => _onKeyDown(index, value),
-                    ),
-                  );
-                }),
+              Text('New Password', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
+              SizedBox(height: 8),
+              Container(
+                height: 48,
+                child: TextField(
+                  controller: _newPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.grey[400]!)),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.grey[400]!)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Color(0xFFFF9333), width: 2)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    isDense: true,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+
+              Text('Confirm Password', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.black87)),
+              SizedBox(height: 8),
+              Container(
+                height: 48,
+                child: TextField(
+                  controller: _confirmPasswordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.grey[400]!)),
+                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Colors.grey[400]!)),
+                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(6), borderSide: BorderSide(color: Color(0xFFFF9333), width: 2)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                    isDense: true,
+                  ),
+                ),
               ),
               SizedBox(height: 24),
 
               SizedBox(
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: _handleVerify,
+                  onPressed: _handleReset,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFFF9333),
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                     elevation: 0,
                   ),
-                  child: Text('Verify Code', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  child: Text('Reset Password', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                 ),
-              ),
-              SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Didn't receive the code? ", style: TextStyle(fontSize: 13, color: Colors.grey[700])),
-                  TextButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Code resent!')));
-                    },
-                    style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size(0, 0), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                    child: Text('Resend Code', style: TextStyle(color: Color(0xFFFF9333), fontWeight: FontWeight.w600, fontSize: 13)),
-                  ),
-                ],
               ),
             ],
           ),

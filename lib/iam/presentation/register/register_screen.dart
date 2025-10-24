@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../../../../shared/utils/validators.dart';
 
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   String _segment = 'Client';
 
@@ -311,7 +311,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 24),
                 ],
 
-                // Profile Data
                 _buildSectionTitle(
                     _segment == 'Shipping Company'
                         ? 'Administrator Details'
@@ -340,7 +339,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 24),
 
-                // Account Data
                 _buildSectionTitle(
                     _segment == 'Shipping Company'
                         ? 'Administrator Account'
@@ -381,7 +379,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 24),
 
-                // Terms and conditions
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

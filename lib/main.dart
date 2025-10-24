@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'iam/presentation/pages/login/login_page.dart';
-import 'iam/presentation/pages/password_recovery/password_recovery.dart';
-import 'iam/presentation/pages/register/register_page.dart';
-import 'iam/presentation/pages/new_password/new_password.dart';
-import 'iam/presentation/pages/otp_verification/otp_verification.dart';
+import 'iam/presentation//login/login_screen.dart';
+import 'iam/presentation/password_recovery/password_recovery.dart';
+import 'iam/presentation//register/register_screen.dart';
+import 'iam/presentation//new_password/new_password.dart';
+import 'iam/presentation//otp_verification/otp_verification.dart';
 
 
 
@@ -29,11 +29,11 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/password-recovery': (context) => const PasswordRecoveryPage(),
-        '/otp-verification': (context) => const OtpVerificationPage(),
-        '/new-password': (context) => const NewPasswordPage(),
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/password-recovery': (context) => const PasswordRecoveryScreen(),
+        '/otp-verification': (context) => const OtpVerificationScreen(),
+        '/new-password': (context) => const NewPasswordScreen(),
       },
     );
   }

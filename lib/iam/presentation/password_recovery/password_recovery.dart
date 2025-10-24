@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import '../../../../shared/utils/validators.dart';
 
 
-class PasswordRecoveryPage extends StatefulWidget {
-  const PasswordRecoveryPage({Key? key}) : super(key: key);
+class PasswordRecoveryScreen extends StatefulWidget {
+  const PasswordRecoveryScreen({Key? key}) : super(key: key);
 
   @override
-  State<PasswordRecoveryPage> createState() => _PasswordRecoveryPageState();
+  State<PasswordRecoveryScreen> createState() => _PasswordRecoveryScreenState();
 }
 
-class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
+class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
 
@@ -208,7 +208,6 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                 ),
                 SizedBox(height: 8),
 
-                // Campo Email con validación
                 Container(
                   height: 48,
                   child: TextFormField(
