@@ -1,0 +1,294 @@
+Project Context
+You are implementing the Dashboard bounded context for CargaSafe Flutter mobile app. This app will connect to the existing JSON Server mock API running from the Angular project at http://localhost:3000. You will NOT create a new fake API - you must consume the existing one that's already running.
+
+The Flutter project follows a strict 4-layer DDD architecture. You must follow the exact structure demonstrated in the existing alerts bounded context in the project.
+
+🏗️ Architecture Rules - CRITICAL
+Folder Structure Requirements
+Bounded contexts go directly under lib/app/
+
+DO NOT create a features/ folder
+Create: lib/app/dashboard/
+Each bounded context MUST have exactly 4 folders:
+
+application/ - Services and use cases
+domain/ - Entities, value objects, enums
+infrastructure/ - DataSources, repository implementations
+presentation/ - Providers, pages, widgets
+NO additional folders allowed at bounded context level
+
+Only these 4 folders are permitted
+No models/, core/, or other custom folders
+Design system and utilities go in shared/presentation/
+
+Theme files: lib/shared/presentation/theme/
+Utilities: lib/shared/presentation/utils/
+Global widgets: lib/shared/presentation/widgets/
+DO NOT create a core/ folder
+
+Everything shared goes in shared/
+Study the alerts bounded context structure first
+
+Use it as your reference template
+Match its folder organization exactly
+Follow its naming conventions
+🌐 API Connection - NO LOCAL FAKE API
+Critical: Use Existing API
+The JSON Server runs from the Angular project:
+
+Start command: npm run db:server (from Angular project root)
+Runs on: http://localhost:3000
+DO NOT create a fake API in Flutter
+
+DO NOT create mock data files
+DO NOT create local JSON files
+ONLY connect to the external API
+API URL Configuration:
+
+Create api_config.dart in lib/shared/infrastructure/
+For Android Emulator use: http://10.0.2.2:3000
+For iOS Simulator use: http://localhost:3000
+For physical devices: use computer's IP (e.g., http://192.168.1.100:3000)
+Available Endpoints:
+
+GET /analytics-trips - All trips
+GET /analytics-trips/:id - Trip by ID
+GET /analytics-alerts - All alerts
+GET /analytics-alerts?tripId=:id - Alerts by trip
+GET /incidentsByMonth - Monthly incidents data
+📦 Domain Layer Instructions
+Entities to Create:
+Trip Entity (lib/app/dashboard/domain/entities/trip.dart)
+
+Properties: id, startDate, endDate, origin, destination, vehiclePlate, driverName, cargoType, status, distance, alertIds
+Business methods: isInProgress, isCompleted, isCancelled, isDelayed, getDurationInHours, getAverageSpeed
+Include copyWith method
+Alert Entity (lib/app/dashboard/domain/entities/alert.dart)
+
+Properties: id, tripId, deviceId, vehiclePlate, type, severity, timestamp, location, sensorData, resolved
+Business methods: isCritical, isHighPriority, isTemperatureAlert, isMovementAlert, getAgeInMinutes
+Include copyWith method
+Value Objects:
+
+Location (latitude, longitude, address)
+SensorData (temperature, movement, humidity, door, timestamp)
+Both need fromJson and toJson methods
+IncidentsByMonth Entity:
+
+Properties: id, month, year, temperatureIncidents, movementIncidents, totalIncidents
+Include copyWith method
+Enums to Create:
+TripStatus - Values: inProgress, completed, cancelled, delayed, planned
+AlertType - Values: temperature, movement, humidity, doorOpen
+AlertSeverity - Values: low, medium, high, critical
+Each enum needs a value property and fromString factory method
+Map to API string values (e.g., 'IN_PROGRESS', 'TEMPERATURE')
+🔌 Infrastructure Layer Instructions
+Remote DataSource:
+Create dashboard_remote_datasource.dart in lib/app/dashboard/infrastructure/datasources/:
+
+Required methods:
+
+getTrips() - Fetch all trips from API
+getTripById(String id) - Fetch single trip
+getAlerts() - Fetch all alerts
+getAlertsByTripId(String tripId) - Fetch alerts for trip
+getIncidentsByMonth() - Fetch monthly incidents
+Implementation details:
+
+Use http.Client for requests
+Parse JSON responses
+Map JSON to domain entities
+Throw exceptions on HTTP errors
+Include private mapper methods (_tripFromJson, _alertFromJson, etc.)
+Repository Implementation:
+Create dashboard_repository_impl.dart in lib/app/dashboard/infrastructure/repositories/:
+
+Inject the remote datasource
+Implement methods that delegate to datasource
+Return domain entities (not JSON)
+Handle errors appropriately
+🎨 Design System Instructions
+Location: lib/shared/presentation/theme/
+AppColors class:
+
+Primary colors: primaryOrange (#FF9233), primaryOrangeDark (#CF7729)
+Status colors: inProgress, completed, delayed, cancelled
+Alert colors: criticalAlert, highAlert, mediumAlert, lowAlert
+Chart colors: temperatureBar (red), movementBar (blue)
+Neutral colors: background, cardBackground, textPrimary, textSecondary, border
+AppTheme class:
+
+Create Material 3 light theme
+Configure AppBar with orange background
+Configure Card theme with rounded corners
+Set up ColorScheme
+Location: lib/shared/presentation/utils/
+DateFormatter class:
+
+formatDateTime - Full date and time
+formatDate - Date only
+formatTime - Time only
+timeAgo - Relative time (e.g., "2h ago")
+StatusHelper class:
+
+getTripStatusColor - Map TripStatus to Color
+getTripStatusText - Map TripStatus to display string
+getAlertSeverityColor - Map AlertSeverity to Color
+📱 Presentation Layer Instructions
+Provider (State Management):
+Create dashboard_provider.dart in lib/app/dashboard/presentation/providers/:
+
+State variables:
+
+Private lists: _trips, _alerts, _incidents
+Private bool: _isLoading
+Private String?: _error
+Getters:
+
+Public getters for all private state
+Computed properties: totalTrips, activeTrips, totalAlerts, pendingAlerts
+Methods:
+
+loadDashboardData() - Fetch all data with Future.wait
+getTripById(String id) - Fetch single trip
+getAlertsByTripId(String tripId) - Fetch alerts for trip
+Call notifyListeners() after state changes
+Handle errors and loading states
+Dashboard Page:
+Create dashboard_page.dart in lib/app/dashboard/presentation/pages/:
+
+UI Structure:
+
+AppBar with title "Dashboard"
+Drawer navigation (sidebar)
+RefreshIndicator for pull-to-refresh
+SingleChildScrollView for scrolling content
+Content sections:
+
+KPI Cards Grid: 2x2 grid showing totalTrips, activeTrips, totalAlerts, pendingAlerts
+Section header: "Monthly Incidents" text
+Incidents Chart: Bar chart component
+Section header: "Recent Trips" text
+Trips List: Show first 3 trips only
+States to handle:
+
+Loading state: Show CircularProgressIndicator
+Error state: Show error message with Retry button
+Success state: Show all content
+Navigation:
+
+Tap on trip card navigates to TripDetailPage
+Pass tripId as route parameter
+Drawer menu items:
+
+Dashboard (selected/active)
+Vehicles
+Sensors
+Trips
+Alerts
+Subscriptions
+Divider
+Log out
+Trip Detail Page:
+Create trip_detail_page.dart in lib/app/dashboard/presentation/pages/:
+
+Accept tripId as constructor parameter
+Load trip data and alerts in initState
+Show loading/error/success states
+Display trip information, metrics, and alerts list
+Allow filtering and sorting of alerts
+Widgets to Create:
+All in lib/app/dashboard/presentation/widgets/:
+
+StatCard:
+
+Shows title (small text)
+Shows value (large bold number)
+Shows icon
+Card with padding
+TripCard:
+
+Shows vehicle plate and status badge in header
+Shows driver, route, cargo, distance
+"View Details" button at bottom
+Tappable with onTap callback
+IncidentsChart:
+
+Uses fl_chart BarChart
+Shows temperature bars (red) and movement bars (blue)
+Interactive tooltips on tap/hover
+Legend at bottom
+Handle empty data state
+AlertBadge (if needed):
+
+Small colored pill showing alert severity
+Use color from StatusHelper
+📦 Dependencies Required
+Add to pubspec.yaml dependencies section:
+
+provider: ^6.1.1 - State management
+http: ^1.1.0 - HTTP client for API calls
+fl_chart: ^0.65.0 - Chart library for bar charts
+intl: ^0.18.1 - Date formatting
+🚀 Implementation Order
+Phase 1: Domain Layer
+
+Study the alerts bounded context structure
+Create all enums first
+Create value objects (Location, SensorData)
+Create entities (Trip, Alert, IncidentsByMonth)
+Phase 2: Infrastructure Layer
+
+Create API config in shared/infrastructure
+Create remote datasource with all methods
+Create repository implementation
+Test API connectivity with Postman or similar
+Phase 3: Design System
+
+Create AppColors in shared/presentation/theme
+Create AppTheme in shared/presentation/theme
+Create DateFormatter in shared/presentation/utils
+Create StatusHelper in shared/presentation/utils
+Phase 4: Presentation Layer
+
+Create provider with state management
+Create reusable widgets (StatCard, TripCard, IncidentsChart)
+Create DashboardPage
+Create TripDetailPage
+Wire up navigation
+Phase 5: Testing & Polish
+
+Start JSON Server: npm run db:server
+Run Flutter app
+Test all features
+Handle edge cases (empty data, errors)
+Add pull-to-refresh
+Test on different screen sizes
+✅ Validation Checklist
+Before considering the implementation complete:
+
+ Follows exact 4-layer structure (application, domain, infrastructure, presentation)
+ Uses lib/app/dashboard/ structure (not features/)
+ Design system is in lib/shared/presentation/
+ Connects to external API at http://localhost:3000
+ No local fake API created
+ All entities have business logic methods
+ All entities have copyWith methods
+ Enums have fromString factory methods
+ Provider handles loading and error states
+ Dashboard shows 4 KPI cards correctly
+ Bar chart displays monthly incidents
+ Shows 3 recent trips
+ Navigation to trip detail works
+ Pull-to-refresh implemented
+ Drawer navigation present
+ Follows CargaSafe brand colors (#FF9233)
+ Matches structure of existing alerts bounded context
+🎯 Key Principles
+Reference the alerts bounded context - This is your template
+Strict 4-layer architecture - No deviations
+Use external API only - No local mock data
+Design system in shared/ - Not in bounded context
+Business logic in domain - Rich entities, not anemic models
+Clean separation - Each layer has clear responsibility

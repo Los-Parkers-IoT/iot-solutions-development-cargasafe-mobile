@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
+import 'package:cargasafe/shared/presentation/theme/app_theme.dart';
+import 'package:cargasafe/dashboard/presentation/pages/dashboard_page/dashboard_page.dart';
+import 'package:cargasafe/dashboard/presentation/providers/dashboard_provider.dart';
+import 'package:cargasafe/dashboard/application/dashboard_service.dart';
+import 'package:cargasafe/dashboard/infrastructure/repositories/dashboard_repository.dart';
+import 'package:cargasafe/dashboard/infrastructure/datasources/dashboard_remote_datasource.dart';
 import 'package:cargasafe/alerts/presentation/pages/alert_page/alerts_page.dart';
 
 void main() {
@@ -9,20 +16,42 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CargaSafe',
-      theme: ThemeData(
-        colorScheme: ColorScheme.light(
-          primary: Color.fromARGB(255, 255, 146, 51),
-          onPrimary: Colors.white,
-          onSurface: Color.fromARGB(255, 79, 79, 79),
+    // Configurar dependencias
+    final dataSource = DashboardRemoteDataSource();
+    final repository = DashboardRepository(remoteDataSource: dataSource);
+    final service = DashboardService(repository: repository);
+
+    // Configurar rutas
+    final router = GoRouter(
+      initialLocation: '/',
+      routes: [
+        GoRoute(
+          path: '/',
+          name: 'dashboard',
+          builder: (context, state) => const DashboardPage(),
         ),
-        fontFamily: GoogleFonts.sourceSans3().fontFamily,
+        GoRoute(
+          path: '/alerts',
+          name: 'alerts',
+          builder: (context, state) => const AlertsPage(),
+        ),
+      ],
+    );
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => DashboardProvider(service: service),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'CargaSafe',
+        theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
+        routerConfig: router,
       ),
-      home: const AlertsPage(),
     );
   }
 }
