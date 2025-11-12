@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+
+macos/Flutter/ephemeral/
+ios/Flutter/.last_build_id
+**/GeneratedPluginRegistrant.swift
+**/FlutterGenerated.xcconfig
+**/flutter_export_environment.sh
