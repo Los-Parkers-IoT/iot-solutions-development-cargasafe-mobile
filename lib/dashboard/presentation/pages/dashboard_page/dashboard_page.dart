@@ -115,7 +115,7 @@ class _DashboardPageState extends State<DashboardPage> {
             title: const Text('Vehicles'),
             onTap: () {
               Navigator.pop(context);
-              // TODO: Navigate to Vehicles
+              context.go('/fleet/vehicles');
             },
           ),
           ListTile(
@@ -123,7 +123,7 @@ class _DashboardPageState extends State<DashboardPage> {
             title: const Text('Sensors'),
             onTap: () {
               Navigator.pop(context);
-              // TODO: Navigate to Sensors
+              context.go('/fleet/devices');
             },
           ),
           ListTile(
