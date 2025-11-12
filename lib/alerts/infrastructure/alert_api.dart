@@ -6,6 +6,7 @@ import 'alert_assembler.dart';
 
 class AlertsApi {
   final String baseUrl = "http://192.168.1.47:8080/api/v1";
+  //final String baseUrl = "https://iot-solutions-development-cargasafe.onrender.com/api/v1";
   final String alertsEndpoint = "/alerts";
 
   Future<List<Alert>> getAlerts() async {

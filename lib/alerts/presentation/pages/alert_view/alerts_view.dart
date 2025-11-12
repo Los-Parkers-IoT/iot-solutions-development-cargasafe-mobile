@@ -1,4 +1,3 @@
-import 'package:cargasafe/alerts/application/alert_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cargasafe/alerts/application/alert_bloc.dart';
@@ -25,8 +24,10 @@ class AlertsView extends StatelessWidget {
               return Center(child: Text('Error: ${state.errorMessage}'));
             }
 
-            final activeCount = state.alerts.where((a) => a.alertStatus == 'OPEN').length;
-            final closedCount = state.alerts.where((a) => a.alertStatus == 'CLOSED').length;
+            final activeCount =
+                state.alerts.where((a) => a.alertStatus == 'OPEN').length;
+            final closedCount =
+                state.alerts.where((a) => a.alertStatus == 'CLOSED').length;
 
             return Padding(
               padding: const EdgeInsets.all(16.0),
@@ -36,11 +37,18 @@ class AlertsView extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: AlertCard(count: '$activeCount', label: 'Active', isDanger: true),
+                        child: AlertCard(
+                          count: '$activeCount',
+                          label: 'Active',
+                          isDanger: true,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: AlertCard(count: '$closedCount', label: 'Closed'),
+                        child: AlertCard(
+                          count: '$closedCount',
+                          label: 'Closed',
+                        ),
                       ),
                     ],
                   ),
