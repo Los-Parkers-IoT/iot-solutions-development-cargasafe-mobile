@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:cargasafe/alerts/domain/models/alert.dart';
+import 'package:cargasafe/alerts/application/alert_bloc.dart';
+import 'package:cargasafe/alerts/application/alert_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AlertTable extends StatelessWidget {
-  const AlertTable({super.key});
+  final List<Alert> alerts;
+  const AlertTable({super.key, required this.alerts});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +21,32 @@ class AlertTable extends StatelessWidget {
           columns: const [
             DataColumn(label: Text('ID')),
             DataColumn(label: Text('Type')),
-            DataColumn(label: Text('Delivery Order ID')),
             DataColumn(label: Text('Status')),
             DataColumn(label: Text('Created')),
-            DataColumn(label: Text('Closed')),
             DataColumn(label: Text('Actions')),
-            DataColumn(label: Text('Details')),
           ],
-          rows: const [],
+          rows: alerts.map((alert) {
+            return DataRow(cells: [
+              DataCell(Text(alert.id.toString())),
+              DataCell(Text(alert.alertType)),
+              DataCell(Text(alert.alertStatus)),
+              DataCell(Text(alert.createdAt.toString())),
+              DataCell(Row(
+                children: [
+                  if (alert.alertStatus != 'CLOSED')
+                    TextButton(
+                      onPressed: () => context.read<AlertBloc>().add(CloseAlert(alert.id)),
+                      child: const Text('Close'),
+                    ),
+                  if (alert.alertStatus == 'OPEN')
+                    TextButton(
+                      onPressed: () => context.read<AlertBloc>().add(AcknowledgeAlert(alert.id)),
+                      child: const Text('Acknowledge'),
+                    ),
+                ],
+              )),
+            ]);
+          }).toList(),
         ),
       ),
     );

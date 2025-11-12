@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cargasafe/alerts/presentation/pages/alert_page/alerts_page.dart';
+import 'package:cargasafe/alerts/presentation/pages/alert_view/alerts_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: GoogleFonts.sourceSans3().fontFamily,
       ),
-      home: const AlertsPage(),
+      home: const AlertsView(),
     );
   }
 }
