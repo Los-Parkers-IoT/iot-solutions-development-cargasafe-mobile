@@ -55,14 +55,12 @@ class DashboardProvider with ChangeNotifier {
   // Get trip by ID
   Future<Trip?> getTripById(String id) async {
     try {
-      // Primero buscar en la lista cargada
       final cachedTrip = _trips.firstWhere(
         (trip) => trip.id == id,
         orElse: () => throw Exception('Not found in cache'),
       );
       return cachedTrip;
     } catch (e) {
-      // Si no está en cache, buscar en el servidor
       try {
         return await service.fetchTripById(id);
       } catch (e) {

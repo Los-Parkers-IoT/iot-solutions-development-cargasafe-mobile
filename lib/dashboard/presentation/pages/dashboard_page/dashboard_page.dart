@@ -1,6 +1,6 @@
+import 'package:cargasafe/shared/presentation/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../shared/presentation/theme/app_colors.dart';
 import '../../providers/dashboard_provider.dart';
 import '../../widgets/stat_card.dart';
@@ -20,9 +20,11 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DashboardProvider>().loadDashboardData();
+      final dashboardProvider = context.read<DashboardProvider>();
+      dashboardProvider.loadDashboardData();
     });
   }
+
 
   Future<void> _refreshData() async {
     await context.read<DashboardProvider>().loadDashboardData();
@@ -30,17 +32,15 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
-      ),
-      drawer: _buildDrawer(),
+    final theme = Theme.of(context);
+    final cs = theme.colorScheme;
+
+    return AppScaffold(
+      title: 'Dashboard',
       body: Consumer<DashboardProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading && provider.trips.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (provider.error != null && provider.trips.isEmpty) {
@@ -68,98 +68,6 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildDrawer() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: AppColors.primaryOrange,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Icon(
-                  Icons.local_shipping,
-                  size: 48,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'CargaSafe',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.dashboard, color: AppColors.primaryOrange),
-            title: const Text('Dashboard'),
-            selected: true,
-            selectedTileColor: AppColors.primaryOrange.withOpacity(0.1),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.directions_car),
-            title: const Text('Vehicles'),
-            onTap: () {
-              Navigator.pop(context);
-              context.go('/fleet/vehicles');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.sensors),
-            title: const Text('Sensors'),
-            onTap: () {
-              Navigator.pop(context);
-              context.go('/fleet/devices');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.route),
-            title: const Text('Trips'),
-            onTap: () {
-              Navigator.pop(context);
-              // TODO: Navigate to Trips
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.warning),
-            title: const Text('Alerts'),
-            onTap: () {
-              Navigator.pop(context);
-              context.go('/alerts');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.subscriptions),
-            title: const Text('Subscriptions'),
-            onTap: () {
-              Navigator.pop(context);
-              // TODO: Navigate to Subscriptions
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Log out'),
-            onTap: () {
-              Navigator.pop(context);
-              // TODO: Implement logout
-            },
-          ),
-        ],
       ),
     );
   }
@@ -210,9 +118,9 @@ class _DashboardPageState extends State<DashboardPage> {
       child: Text(
         title,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
+          fontWeight: FontWeight.bold,
+          color: AppColors.textPrimary,
+        ),
       ),
     );
   }
@@ -278,8 +186,8 @@ class _DashboardPageState extends State<DashboardPage> {
             Text(
               'Error loading dashboard',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -301,4 +209,3 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
-

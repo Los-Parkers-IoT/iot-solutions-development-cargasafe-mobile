@@ -1,3 +1,4 @@
+import 'package:cargasafe/shared/presentation/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +34,8 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
   Widget build(BuildContext context) {
     final p = context.watch<FleetProvider>();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Vehicle Detail')),
+    return AppScaffold(
+      title: 'Vehicle Detail',
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: _loading
@@ -50,13 +51,14 @@ class _VehicleDetailPageState extends State<VehicleDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Plate: ${_vehicle!.plate}', style: Theme.of(context).textTheme.titleLarge),
+                  Text('Plate: ${_vehicle!.plate}',
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   Text('Type: ${_vehicle!.type.name.toUpperCase()}'),
                   Text('Status: ${_vehicle!.status.name.replaceAll('_', ' ').toLowerCase()}'),
                   Text('Odometer: ${_vehicle!.odometerKm.toStringAsFixed(0)} km'),
-                  Text('Capabilities: ${( _vehicle!.capabilities.isNotEmpty ? _vehicle!.capabilities.join(', ') : '—')}'),
-                  Text('IoT Devices: ${( _vehicle!.deviceImeis.isNotEmpty ? _vehicle!.deviceImeis.join(', ') : '—')}'),
+                  Text('Capabilities: ${_vehicle!.capabilities.isNotEmpty ? _vehicle!.capabilities.join(', ') : '—'}'),
+                  Text('IoT Devices: ${_vehicle!.deviceImeis.isNotEmpty ? _vehicle!.deviceImeis.join(', ') : '—'}'),
                 ],
               ),
             ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_drawer.dart';
+import '../../../app/layout/main_drawer.dart';
 
 class AppScaffold extends StatelessWidget {
   final String title;
@@ -21,7 +21,7 @@ class AppScaffold extends StatelessWidget {
       drawer: const MainDrawer(),
       appBar: AppBar(
         title: Text(title),
-        automaticallyImplyLeading: true, // muestra hamburguesa
+        automaticallyImplyLeading: true,
       ),
       body: body,
       floatingActionButton: floatingActionButton,
