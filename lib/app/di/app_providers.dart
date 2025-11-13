@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 // ================= DASHBOARD =================
 import 'package:cargasafe/dashboard/presentation/providers/dashboard_provider.dart';
@@ -42,9 +43,9 @@ import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicle_by_pl
 import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicles_by_type.dart';
 import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicles_by_status.dart';
 
-final appProviders = <ChangeNotifierProvider>[
+final List<SingleChildWidget> appProviders = [
   // DASHBOARD
-  ChangeNotifierProvider(
+  ChangeNotifierProvider<DashboardProvider>(
     create: (_) {
       final dashboardDS = DashboardRemoteDataSource();
       final dashboardRepo = DashboardRepository(remoteDataSource: dashboardDS);
@@ -54,7 +55,7 @@ final appProviders = <ChangeNotifierProvider>[
   ),
 
   // FLEET
-  ChangeNotifierProvider(
+  ChangeNotifierProvider<FleetProvider>(
     create: (_) {
       final fleetApi = FleetApiService(baseUrl: AppConfig.baseUrl);
       final deviceDS = DeviceRemoteDataSource(fleetApi);

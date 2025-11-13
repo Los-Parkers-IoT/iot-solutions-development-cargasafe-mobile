@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/entities/device.dart';
 import '../providers/fleet_provider.dart';
 import '../widgets/device_create_edit_dialog.dart';
 import '../widgets/filters_toolbar.dart';
 import '../styles/fleet_styles.dart';
+import '../../../shared/presentation/widgets/app_scaffold.dart';
 
 class DeviceManagementPage extends StatefulWidget {
   const DeviceManagementPage({super.key});
@@ -34,8 +34,8 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
           (d.vehiclePlate ?? '').toLowerCase().contains(q);
     }).toList();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('IoT Devices')),
+    return AppScaffold(
+      title: 'IoT Devices',
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final res = await DeviceCreateEditDialog.show(context);
