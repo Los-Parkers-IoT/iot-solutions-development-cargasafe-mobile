@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 // Domain
+import '../../domain/entities/vehicle.dart';
 import '../../domain/entities/vehicle_status.dart';
 import '../../domain/entities/vehicle_type.dart';
 
@@ -27,6 +28,7 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
   String _search = '';
   VehicleStatus? _status;
   VehicleType? _type;
+  String? _capability;
 
   @override
   void initState() {
@@ -39,31 +41,44 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
   Widget build(BuildContext context) {
     final provider = context.watch<FleetProvider>();
 
+    final capabilityOptions = provider.vehicles
+        .expand((v) => v.capabilities)
+        .where((c) => c.trim().isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
+
     final rows = provider.vehicles.where((v) {
       final q = _search.toLowerCase();
       final matchesQ =
-          q.isEmpty ||
-          v.plate.toLowerCase().contains(q) ||
-          v.type.name.toLowerCase().contains(q) ||
-          v.capabilities.any((c) => c.toLowerCase().contains(q)) ||
-          v.deviceImeis.any((i) => i.toLowerCase().contains(q));
+          _search.isEmpty ||
+              v.plate.toLowerCase().contains(q) ||
+              v.type.name.toLowerCase().contains(q) ||
+              v.capabilities.any((c) => c.toLowerCase().contains(q)) ||
+              v.deviceImeis.any((i) => i.toLowerCase().contains(q));
+
       final matchesStatus = _status == null || v.status == _status;
       final matchesType = _type == null || v.type == _type;
-      return matchesQ && matchesStatus && matchesType;
+
+      final matchesCapability = _capability == null
+          ? true
+          : v.capabilities
+          .map((c) => c.toLowerCase())
+          .contains(_capability!.toLowerCase());
+
+      return matchesQ && matchesStatus && matchesType && matchesCapability;
     }).toList();
 
     final total = provider.vehicles.length;
-    final inService = provider.vehicles
-        .where((v) => v.status == VehicleStatus.IN_SERVICE)
-        .length;
+    final inService =
+        provider.vehicles.where((v) => v.status == VehicleStatus.IN_SERVICE).length;
 
     return AppScaffold(
       title: 'Vehicles',
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final res = await VehicleCreateEditDialog.show(context);
-          if (res != null)
-            await context.read<FleetProvider>().createVehicle(res);
+          if (res != null) await context.read<FleetProvider>().createVehicle(res);
         },
         icon: const Icon(Icons.add),
         label: const Text('Add'),
@@ -101,37 +116,55 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
               right: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // STATUS
                   DropdownButton<VehicleStatus?>(
                     hint: const Text('All statuses'),
                     value: _status,
                     items: [null, ...VehicleStatus.values]
                         .map(
                           (s) => DropdownMenuItem(
-                            value: s,
-                            child: Text(
-                              s == null ? 'All statuses' : _titleCase(s.name),
-                            ),
-                          ),
-                        )
+                        value: s,
+                        child: Text(s == null ? 'All statuses' : _titleCase(s.name)),
+                      ),
+                    )
                         .toList(),
                     onChanged: (v) => setState(() => _status = v),
                   ),
                   const SizedBox(width: 8),
+
+                  // TYPE
                   DropdownButton<VehicleType?>(
                     hint: const Text('All types'),
                     value: _type,
                     items: [null, ...VehicleType.values]
                         .map(
                           (t) => DropdownMenuItem(
-                            value: t,
-                            child: Text(
-                              t == null ? 'All types' : t.name.toUpperCase(),
-                            ),
-                          ),
-                        )
+                        value: t,
+                        child: Text(t == null ? 'All types' : t.name.toUpperCase()),
+                      ),
+                    )
                         .toList(),
                     onChanged: (v) => setState(() => _type = v),
                   ),
+                  const SizedBox(width: 8),
+
+                  // 👇 NUEVO: CAPABILITY
+                  if (capabilityOptions.isNotEmpty)
+                    DropdownButton<String?>(
+                      hint: const Text('All capabilities'),
+                      value: _capability,
+                      items: <String?>[null, ...capabilityOptions]
+                          .map(
+                            (c) => DropdownMenuItem(
+                          value: c,
+                          child: Text(c ?? 'All capabilities'),
+                        ),
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() => _capability = value);
+                      },
+                    ),
                 ],
               ),
             ),
@@ -158,78 +191,69 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
                   onRefresh: () => context.read<FleetProvider>().loadVehicles(),
                   child: rows.isEmpty
                       ? ListView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          children: const [
-                            SizedBox(height: 48),
-                            Center(
-                              child: Text(
-                                'No vehicles found',
-                                style: TextStyle(color: Colors.black54),
-                              ),
-                            ),
-                            SizedBox(height: 48),
-                          ],
-                        )
-                      : ListView.separated(
-                          itemCount: rows.length,
-                          separatorBuilder: (_, __) => const Divider(height: 1),
-                          itemBuilder: (_, i) {
-                            final v = rows[i];
-                            final subtitle = [
-                              v.type.name.toUpperCase(),
-                              _titleCase(v.status.name),
-                              if (v.deviceImeis.isNotEmpty)
-                                'IoT: ${v.deviceImeis.first}'
-                                    '${v.deviceImeis.length > 1 ? ' (+${v.deviceImeis.length - 1})' : ''}',
-                            ].join(' • ');
-
-                            return ListTile(
-                              title: Text(v.plate),
-                              subtitle: Text(subtitle),
-                              trailing: Wrap(
-                                children: [
-                                  IconButton(
-                                    tooltip: 'View',
-                                    icon: const Icon(Icons.visibility),
-                                    onPressed: (v.id == null)
-                                        ? null
-                                        : () => context.push(
-                                            '/fleet/vehicles/${v.id}',
-                                          ),
-                                  ),
-                                  IconButton(
-                                    tooltip: 'Edit',
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () async {
-                                      final next =
-                                          await VehicleCreateEditDialog.show(
-                                            context,
-                                            initial: v,
-                                          );
-                                      if (next != null) {
-                                        await context
-                                            .read<FleetProvider>()
-                                            .updateVehicle(next);
-                                      }
-                                    },
-                                  ),
-                                  IconButton(
-                                    tooltip: 'Delete',
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: (v.id == null)
-                                        ? null
-                                        : () async => context
-                                              .read<FleetProvider>()
-                                              .deleteVehicle(v.id!),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: const [
+                      SizedBox(height: 48),
+                      Center(
+                        child: Text(
+                          'No vehicles found',
+                          style: TextStyle(color: Colors.black54),
                         ),
+                      ),
+                      SizedBox(height: 48),
+                    ],
+                  )
+                      : ListView.separated(
+                    itemCount: rows.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (_, i) {
+                      final v = rows[i];
+                      final subtitle = [
+                        v.type.name.toUpperCase(),
+                        _titleCase(v.status.name),
+                        if (v.deviceImeis.isNotEmpty)
+                          'IoT: ${v.deviceImeis.first}'
+                              '${v.deviceImeis.length > 1 ? ' (+${v.deviceImeis.length - 1})' : ''}',
+                      ].join(' • ');
+
+                      return ListTile(
+                        title: Text(v.plate),
+                        subtitle: Text(subtitle),
+                        trailing: Wrap(
+                          children: [
+                            IconButton(
+                              tooltip: 'View',
+                              icon: const Icon(Icons.visibility),
+                              onPressed: (v.id == null)
+                                  ? null
+                                  : () => context.push('/fleet/vehicles/${v.id}'),
+                            ),
+                            IconButton(
+                              tooltip: 'Edit',
+                              icon: const Icon(Icons.edit),
+                              onPressed: () async {
+                                final next = await VehicleCreateEditDialog.show(
+                                  context,
+                                  initial: v,
+                                );
+                                if (next != null) {
+                                  await context.read<FleetProvider>().updateVehicle(next);
+                                }
+                              },
+                            ),
+                            IconButton(
+                              tooltip: 'Delete',
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: (v.id == null)
+                                  ? null
+                                  : () async =>
+                                  context.read<FleetProvider>().deleteVehicle(v.id!),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -239,8 +263,6 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
     );
   }
 
-  String _titleCase(String s) => s
-      .split('_')
-      .map((p) => p.isEmpty ? '' : '${p[0]}${p.substring(1).toLowerCase()}')
-      .join(' ');
+  String _titleCase(String s) =>
+      s.split('_').map((p) => p.isEmpty ? '' : '${p[0]}${p.substring(1).toLowerCase()}').join(' ');
 }
