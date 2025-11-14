@@ -1,9 +1,9 @@
 import 'package:cargasafe/alerts/presentation/routing/alert_routes.dart';
 import 'package:cargasafe/dashboard/presentation/routing/dashboard_routes.dart';
+import 'package:cargasafe/fleet/presentation/routing/fleet_routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layout/main_layout.dart';
-import '../../fleet/routing/fleet_routes.dart';
 import '../../shared/presentation/pages/page_not_found.dart';
 
 final appRouter = GoRouter(

@@ -1,9 +1,9 @@
+import 'package:cargasafe/fleet/presentation/pages/device_management_page.dart';
 import 'package:cargasafe/fleet/presentation/providers/fleet_provider.dart';
 import 'package:go_router/go_router.dart';
-import '../presentation/pages/device_management_page.dart';
-import '../presentation/pages/device_detail_page.dart';
-import '../presentation/pages/vehicle_management_page.dart';
-import '../presentation/pages/vehicle_detail_page.dart';
+import 'package:cargasafe/fleet/presentation/pages/vehicle_management_page.dart';
+import 'package:cargasafe/fleet/presentation/pages/device_detail_page.dart';
+import 'package:cargasafe/fleet/presentation/pages/vehicle_detail_page.dart';
 
 // fleet_routes.dart
 final List<GoRoute> fleetRoutes = [
