@@ -1,0 +1,80 @@
+[
+  {
+    "id": "1",
+    "startDate": "2024-10-01T08:00:00.000Z",
+    "endDate": "2024-10-01T18:30:00.000Z",
+    "origin": "Lima, Perú",
+    "destination": "Arequipa, Perú",
+    "vehiclePlate": "ABC-123",
+    "driverName": "Juan Pérez",
+    "cargoType": "Productos Farmacéuticos",
+    "status": "COMPLETED",
+    "distance": 1015,
+    "alertIds": ["alert-1"]
+  },
+  {
+    "id": "2",
+    "startDate": "2024-10-02T07:30:00.000Z",
+    "endDate": "2024-10-02T16:45:00.000Z",
+    "origin": "Trujillo, Perú",
+    "destination": "Chiclayo, Perú",
+    "vehiclePlate": "DEF-456",
+    "driverName": "María García",
+    "cargoType": "Alimentos Refrigerados",
+    "status": "COMPLETED",
+    "distance": 210,
+    "alertIds": ["alert-2"]
+  },
+  {
+    "id": "3",
+    "startDate": "2024-10-03T09:00:00.000Z",
+    "endDate": null,
+    "origin": "Cusco, Perú",
+    "destination": "Lima, Perú",
+    "vehiclePlate": "GHI-789",
+    "driverName": "Carlos Mendoza",
+    "cargoType": "Lácteos",
+    "status": "IN_PROGRESS",
+    "distance": 1165,
+    "alertIds": ["alert-3", "alert-4"]
+  },
+  {
+    "id": "4",
+    "startDate": "2024-10-03T10:00:00.000Z",
+    "endDate": "2024-10-03T20:30:00.000Z",
+    "origin": "Iquitos, Perú",
+    "destination": "Lima, Perú",
+    "vehiclePlate": "JKL-012",
+    "driverName": "Luis Torres",
+    "cargoType": "Frutas Tropicales",
+    "status": "DELAYED",
+    "distance": 1450,
+    "alertIds": ["alert-5"]
+  },
+  {
+    "id": "5",
+    "startDate": "2024-10-05T06:00:00.000Z",
+    "endDate": null,
+    "origin": "Lima, Perú",
+    "destination": "Piura, Perú",
+    "vehiclePlate": "MNO-345",
+    "driverName": "Ana Quispe",
+    "cargoType": "Electrónicos",
+    "status": "PLANNED",
+    "distance": 973,
+    "alertIds": []
+  },
+  {
+    "id": "6",
+    "startDate": "2024-10-04T07:00:00.000Z",
+    "endDate": null,
+    "origin": "Arequipa, Perú",
+    "destination": "Tacna, Perú",
+    "vehiclePlate": "PQR-678",
+    "driverName": "Sofía Ramos",
+    "cargoType": "Carne Congelada",
+    "status": "IN_PROGRESS",
+    "distance": 380,
+    "alertIds": ["alert-6", "alert-7"]
+  }
+]
