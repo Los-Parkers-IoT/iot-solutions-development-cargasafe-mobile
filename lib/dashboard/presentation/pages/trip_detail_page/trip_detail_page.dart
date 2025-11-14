@@ -10,10 +10,7 @@ import '../../providers/dashboard_provider.dart';
 class TripDetailPage extends StatefulWidget {
   final String tripId;
 
-  const TripDetailPage({
-    Key? key,
-    required this.tripId,
-  }) : super(key: key);
+  const TripDetailPage({super.key, required this.tripId});
 
   @override
   State<TripDetailPage> createState() => _TripDetailPageState();
@@ -84,16 +81,14 @@ class _TripDetailPageState extends State<TripDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trip Details'),
-      ),
+      appBar: AppBar(title: const Text('Trip Details')),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? _buildErrorState()
-              : _trip == null
-                  ? _buildNotFoundState()
-                  : _buildContent(),
+          ? _buildErrorState()
+          : _trip == null
+          ? _buildNotFoundState()
+          : _buildContent(),
     );
   }
 
@@ -126,8 +121,8 @@ class _TripDetailPageState extends State<TripDetailPage> {
                 Text(
                   _trip!.vehiclePlate,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -135,8 +130,9 @@ class _TripDetailPageState extends State<TripDetailPage> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                      color: StatusHelper.getTripStatusColor(_trip!.status)
-                        .withValues(alpha: 0.2),
+                    color: StatusHelper.getTripStatusColor(
+                      _trip!.status,
+                    ).withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -225,19 +221,15 @@ class _TripDetailPageState extends State<TripDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              color: AppColors.primaryOrange,
-              size: 28,
-            ),
+            Icon(icon, color: AppColors.primaryOrange, size: 28),
             const SizedBox(height: 8),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
                 value,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 4),
@@ -266,9 +258,9 @@ class _TripDetailPageState extends State<TripDetailPage> {
             children: [
               Text(
                 'Alerts (${_alerts.length})',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               Row(
                 children: [
@@ -434,10 +426,7 @@ class _TripDetailPageState extends State<TripDetailPage> {
             const SizedBox(height: 16),
             const Text(
               'Error loading trip',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
@@ -464,18 +453,11 @@ class _TripDetailPageState extends State<TripDetailPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.search_off,
-              size: 64,
-              color: AppColors.textSecondary,
-            ),
+            Icon(Icons.search_off, size: 64, color: AppColors.textSecondary),
             SizedBox(height: 16),
             Text(
               'Trip not found',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -483,4 +465,3 @@ class _TripDetailPageState extends State<TripDetailPage> {
     );
   }
 }
-

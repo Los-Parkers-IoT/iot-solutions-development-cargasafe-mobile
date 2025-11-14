@@ -19,10 +19,7 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MainDrawer(),
-      appBar: AppBar(
-        title: Text(title),
-        automaticallyImplyLeading: true,
-      ),
+      appBar: AppBar(title: Text(title), automaticallyImplyLeading: true),
       body: body,
       floatingActionButton: floatingActionButton,
     );

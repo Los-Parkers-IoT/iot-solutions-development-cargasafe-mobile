@@ -12,7 +12,7 @@ class TripsCubit extends Cubit<TripsState> {
   final TripsApi tripsApi = TripsApi();
   final DeliveryOrdersApi deliveryOrdersApi = DeliveryOrdersApi();
 
-  TripsCubit() : super(TripsState.initial()) {}
+  TripsCubit() : super(TripsState.initial());
 
   // -----------------------------------------------------
   // LOAD TRIPS

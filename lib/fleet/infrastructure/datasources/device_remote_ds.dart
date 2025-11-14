@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../dto/device_dto.dart';
 import '../mappers/device_mapper.dart';
 import '../../domain/entities/device.dart';
@@ -10,7 +9,11 @@ class DeviceRemoteDataSource {
 
   Future<List<Device>> getAll() async {
     final res = await api.client.get<List>(api.ep.devices);
-    final list = (res.data ?? []).cast<Map<String, dynamic>>().map(DeviceDto.fromJson).map(toDevice).toList();
+    final list = (res.data ?? [])
+        .cast<Map<String, dynamic>>()
+        .map(DeviceDto.fromJson)
+        .map(toDevice)
+        .toList();
     return list;
   }
 
@@ -20,12 +23,18 @@ class DeviceRemoteDataSource {
   }
 
   Future<Device> create(Device payload) async {
-    final res = await api.client.post(api.ep.devices, data: fromDeviceCreate(payload));
+    final res = await api.client.post(
+      api.ep.devices,
+      data: fromDeviceCreate(payload),
+    );
     return toDevice(DeviceDto.fromJson(res.data));
   }
 
   Future<Device> update(Device payload) async {
-    final res = await api.client.put(api.ep.deviceById(payload.id!), data: fromDeviceUpdate(payload));
+    final res = await api.client.put(
+      api.ep.deviceById(payload.id!),
+      data: fromDeviceUpdate(payload),
+    );
     return toDevice(DeviceDto.fromJson(res.data));
   }
 
@@ -34,18 +43,28 @@ class DeviceRemoteDataSource {
   }
 
   Future<Device> updateFirmware(int id, String firmware) async {
-    final res = await api.client.post(api.ep.deviceFirmware(id), data: { 'firmware': firmware });
+    final res = await api.client.post(
+      api.ep.deviceFirmware(id),
+      data: {'firmware': firmware},
+    );
     return toDevice(DeviceDto.fromJson(res.data));
   }
 
   Future<Device> updateOnline(int id, bool online) async {
-    final res = await api.client.patch(api.ep.deviceOnline(id), data: { 'online': online });
+    final res = await api.client.patch(
+      api.ep.deviceOnline(id),
+      data: {'online': online},
+    );
     return toDevice(DeviceDto.fromJson(res.data));
   }
 
   Future<List<Device>> findByOnline(bool online) async {
     final res = await api.client.get<List>(api.ep.devicesByOnline(online));
-    return (res.data ?? []).cast<Map<String, dynamic>>().map(DeviceDto.fromJson).map(toDevice).toList();
+    return (res.data ?? [])
+        .cast<Map<String, dynamic>>()
+        .map(DeviceDto.fromJson)
+        .map(toDevice)
+        .toList();
   }
 
   Future<Device> findByImei(String imei) async {

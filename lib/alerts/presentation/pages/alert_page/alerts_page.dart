@@ -1,12 +1,10 @@
 import 'package:cargasafe/shared/presentation/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:cargasafe/alerts/presentation/widgets/alerts_card.dart';
 import 'package:cargasafe/alerts/presentation/widgets/alert_table.dart';
 import 'package:cargasafe/alerts/application/alert_bloc.dart';
 import 'package:cargasafe/alerts/application/alert_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cargasafe/shared/presentation/theme/app_colors.dart';
 
 class AlertsPage extends StatelessWidget {
   const AlertsPage({super.key});
@@ -31,10 +29,7 @@ class AlertsPage extends StatelessWidget {
                 ),
                 SizedBox(width: 16),
                 Expanded(
-                  child: AlertCard(
-                    count: '0',
-                    label: 'Resolved',
-                  ),
+                  child: AlertCard(count: '0', label: 'Resolved'),
                 ),
               ],
             ),
@@ -79,9 +74,7 @@ class AlertsPage extends StatelessWidget {
             Expanded(
               child: BlocBuilder<AlertBloc, AlertState>(
                 builder: (context, state) {
-                  return AlertTable(
-                    alerts: state.alerts, 
-                  );
+                  return AlertTable(alerts: state.alerts);
                 },
               ),
             ),
