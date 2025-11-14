@@ -6,13 +6,11 @@ import 'package:cargasafe/trips/infrastructure/trip_api.dart';
 import 'trips_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:bloc/bloc.dart';
-
-class TripsCubit extends Cubit<TripsState> {
+class TripsBloc extends Cubit<TripsState> {
   final TripsApi tripsApi = TripsApi();
   final DeliveryOrdersApi deliveryOrdersApi = DeliveryOrdersApi();
 
-  TripsCubit() : super(TripsState.initial());
+  TripsBloc() : super(TripsState.initial());
 
   // -----------------------------------------------------
   // LOAD TRIPS

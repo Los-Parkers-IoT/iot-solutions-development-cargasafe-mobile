@@ -1,4 +1,5 @@
 import 'package:cargasafe/alerts/application/alert_bloc.dart';
+import 'package:cargasafe/trips/application/trips_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -67,6 +68,11 @@ final List<SingleChildWidget> appProviders = [
       final alertsApi = AlertsApi();
       final bloc = AlertBloc(alertsApi)..add(LoadAlerts());
       return bloc;
+    },
+  ),
+  BlocProvider<TripsBloc>(
+    create: (context) {
+      return TripsBloc();
     },
   ),
 

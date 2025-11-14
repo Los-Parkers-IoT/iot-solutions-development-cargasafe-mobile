@@ -1,6 +1,7 @@
 import 'package:cargasafe/alerts/presentation/routing/alert_routes.dart';
 import 'package:cargasafe/dashboard/presentation/routing/dashboard_routes.dart';
 import 'package:cargasafe/fleet/presentation/routing/fleet_routes.dart';
+import 'package:cargasafe/trips/presentation/trips_routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layout/main_layout.dart';
@@ -12,7 +13,12 @@ final appRouter = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) => MainLayout(child: child),
-      routes: [...dashboardRoutes, ...alertRoutes, ...fleetRoutes],
+      routes: [
+        ...dashboardRoutes,
+        ...alertRoutes,
+        ...fleetRoutes,
+        ...tripsRoutes,
+      ],
     ),
   ],
 );
