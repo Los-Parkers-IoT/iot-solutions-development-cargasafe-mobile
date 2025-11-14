@@ -5,12 +5,12 @@ class FiltersToolbar extends StatelessWidget {
     super.key,
     this.searchHint = 'Search…',
     required this.onSearch,
-    this.right = const SizedBox.shrink(),
+    this.right, // 👈 nullable
   });
 
   final String searchHint;
   final void Function(String) onSearch;
-  final Widget right;
+  final Widget? right;
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +22,27 @@ class FiltersToolbar extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: TextField(
               decoration: InputDecoration(
+                hintText: searchHint,
                 border: const OutlineInputBorder(),
                 isDense: true,
-                labelText: searchHint,
               ),
               onChanged: onSearch,
             ),
           ),
-          const SizedBox(width: 12),
-          right,
+          if (right != null) ...[
+            const SizedBox(width: 12),
+            Flexible(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: right!,
+              ),
+            ),
+          ],
         ],
       ),
     );
