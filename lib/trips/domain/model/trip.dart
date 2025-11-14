@@ -1,6 +1,6 @@
-import 'package:cargasafe/dashboard/domain/enums/trip_status.dart';
 import 'package:cargasafe/trips/domain/model/delivery_order.dart';
 import 'package:cargasafe/trips/domain/model/origin_point.dart';
+import 'package:cargasafe/trips/domain/model/trip_status.dart';
 
 class Trip {
   int id;

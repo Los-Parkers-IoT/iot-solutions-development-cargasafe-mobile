@@ -1,34 +1,29 @@
 enum TripStatus {
-  created,
-  inProgress,
-  completed,
-  cancelled;
+  inProgress('IN_PROGRESS'),
+  completed('COMPLETED'),
+  cancelled('CANCELLED'),
+  delayed('DELAYED'),
+  planned('PLANNED');
 
-  String get value {
-    switch (this) {
-      case TripStatus.created:
-        return 'CREATED';
-      case TripStatus.inProgress:
-        return 'IN_PROGRESS';
-      case TripStatus.completed:
-        return 'COMPLETED';
-      case TripStatus.cancelled:
-        return 'CANCELLED';
-    }
-  }
+  final String value;
+  const TripStatus(this.value);
 
-  static TripStatus fromString(String status) {
-    switch (status.toUpperCase()) {
-      case 'CREATED':
-        return TripStatus.created;
+  static TripStatus fromString(String value) {
+    switch (value.toUpperCase()) {
       case 'IN_PROGRESS':
+      case 'IN PROGRESS':
+      case 'INPROGRESS':
         return TripStatus.inProgress;
       case 'COMPLETED':
         return TripStatus.completed;
       case 'CANCELLED':
         return TripStatus.cancelled;
+      case 'DELAYED':
+        return TripStatus.delayed;
+      case 'PLANNED':
+        return TripStatus.planned;
       default:
-        throw ArgumentError('Invalid TripStatus: $status');
+        return TripStatus.planned;
     }
   }
 }
