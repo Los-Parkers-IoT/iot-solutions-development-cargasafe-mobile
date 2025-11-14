@@ -12,12 +12,7 @@ final appRouter = GoRouter(
   routes: [
     ShellRoute(
       builder: (context, state, child) => MainLayout(child: child),
-      routes: [
-        ...dashboardRoutes,
-        ...alertRoutes,
-        ...fleetRoutes,
-      ],
+      routes: [...dashboardRoutes, ...alertRoutes, ...fleetRoutes],
     ),
   ],
 );
-
