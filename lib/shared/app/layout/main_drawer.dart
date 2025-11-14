@@ -28,7 +28,9 @@ class MainDrawer extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 36, 20, 20),
             decoration: BoxDecoration(
               color: cs.primary,
-              borderRadius: const BorderRadius.only(topRight: Radius.circular(24)),
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(24),
+              ),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,7 +41,11 @@ class MainDrawer extends StatelessWidget {
                     color: cs.onPrimary.withValues(alpha: .15),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Icon(Icons.local_shipping_rounded, size: 28, color: cs.onPrimary),
+                  child: Icon(
+                    Icons.local_shipping_rounded,
+                    size: 28,
+                    color: cs.onPrimary,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Text(
@@ -59,54 +65,60 @@ class MainDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                _Section(children: [
-                  _NavItem(
-                    icon: Icons.dashboard_rounded,
-                    label: 'Dashboard',
-                    path: '/dashboard',
-                    current: current,
-                  ),
-                ]),
+                _Section(
+                  children: [
+                    _NavItem(
+                      icon: Icons.dashboard_rounded,
+                      label: 'Dashboard',
+                      path: '/dashboard',
+                      current: current,
+                    ),
+                  ],
+                ),
 
                 _Divider(cs: cs),
 
-                _Section(children: [
-                  _NavItem(
-                    icon: Icons.directions_car_filled_rounded,
-                    label: 'Vehicles',
-                    path: '/fleet/vehicles',
-                    current: current,
-                  ),
-                  _NavItem(
-                    icon: Icons.sensors_rounded,
-                    label: 'Sensors',
-                    path: '/fleet/devices',
-                    current: current,
-                  ),
-                  _NavItem(
-                    icon: Icons.route_rounded,
-                    label: 'Trips',
-                    path: '/trips',
-                    current: current,
-                  ),
-                ]),
+                _Section(
+                  children: [
+                    _NavItem(
+                      icon: Icons.directions_car_filled_rounded,
+                      label: 'Vehicles',
+                      path: '/fleet/vehicles',
+                      current: current,
+                    ),
+                    _NavItem(
+                      icon: Icons.sensors_rounded,
+                      label: 'Sensors',
+                      path: '/fleet/devices',
+                      current: current,
+                    ),
+                    _NavItem(
+                      icon: Icons.route_rounded,
+                      label: 'Trips',
+                      path: '/trips',
+                      current: current,
+                    ),
+                  ],
+                ),
 
                 _Divider(cs: cs),
 
-                _Section(children: [
-                  _NavItem(
-                    icon: Icons.warning_amber_rounded,
-                    label: 'Alerts',
-                    path: '/alerts',
-                    current: current,
-                  ),
-                  _NavItem(
-                    icon: Icons.subscriptions_rounded,
-                    label: 'Subscriptions',
-                    path: '/subscriptions',
-                    current: current,
-                  ),
-                ]),
+                _Section(
+                  children: [
+                    _NavItem(
+                      icon: Icons.warning_amber_rounded,
+                      label: 'Alerts',
+                      path: '/alerts',
+                      current: current,
+                    ),
+                    _NavItem(
+                      icon: Icons.subscriptions_rounded,
+                      label: 'Subscriptions',
+                      path: '/subscriptions',
+                      current: current,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -138,8 +150,12 @@ class _Section extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: children
-        .map((w) =>
-        Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: w))
+        .map(
+          (w) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: w,
+          ),
+        )
         .toList(),
   );
 }
@@ -204,7 +220,9 @@ class _NavItem extends StatelessWidget {
     );
 
     return Material(
-      color: _selected ? cs.secondaryContainer.withValues(alpha: .6) : Colors.transparent,
+      color: _selected
+          ? cs.secondaryContainer.withValues(alpha: .6)
+          : Colors.transparent,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../app/layout/main_drawer.dart';
+import '../../../shared/app/layout/main_drawer.dart';
 
 class AppScaffold extends StatelessWidget {
   final String title;
@@ -19,10 +19,7 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MainDrawer(),
-      appBar: AppBar(
-        title: Text(title),
-        automaticallyImplyLeading: true,
-      ),
+      appBar: AppBar(title: Text(title), automaticallyImplyLeading: true),
       body: body,
       floatingActionButton: floatingActionButton,
     );

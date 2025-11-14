@@ -1,5 +1,4 @@
 import 'package:cargasafe/fleet/presentation/pages/device_management_page.dart';
-import 'package:cargasafe/fleet/presentation/providers/fleet_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cargasafe/fleet/presentation/pages/vehicle_management_page.dart';
 import 'package:cargasafe/fleet/presentation/pages/device_detail_page.dart';
@@ -20,11 +19,13 @@ final List<GoRoute> fleetRoutes = [
   GoRoute(
     path: '/fleet/vehicles/:id',
     name: 'fleet-vehicle-detail',
-    builder: (ctx, st) => VehicleDetailPage(id: int.parse(st.pathParameters['id']!)),
+    builder: (ctx, st) =>
+        VehicleDetailPage(id: int.parse(st.pathParameters['id']!)),
   ),
   GoRoute(
     path: '/fleet/devices/:id',
     name: 'fleet-device-detail',
-    builder: (ctx, st) => DeviceDetailPage(id: int.parse(st.pathParameters['id']!)),
+    builder: (ctx, st) =>
+        DeviceDetailPage(id: int.parse(st.pathParameters['id']!)),
   ),
 ];

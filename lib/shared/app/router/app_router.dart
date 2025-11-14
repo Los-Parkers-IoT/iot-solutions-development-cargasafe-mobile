@@ -1,10 +1,11 @@
 import 'package:cargasafe/alerts/presentation/routing/alert_routes.dart';
 import 'package:cargasafe/dashboard/presentation/routing/dashboard_routes.dart';
 import 'package:cargasafe/fleet/presentation/routing/fleet_routes.dart';
+import 'package:cargasafe/trips/presentation/trips_routes.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layout/main_layout.dart';
-import '../../shared/presentation/pages/page_not_found.dart';
+import 'package:cargasafe/shared/presentation/pages/page_not_found.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/dashboard',
@@ -16,8 +17,8 @@ final appRouter = GoRouter(
         ...dashboardRoutes,
         ...alertRoutes,
         ...fleetRoutes,
+        ...tripsRoutes,
       ],
     ),
   ],
 );
-

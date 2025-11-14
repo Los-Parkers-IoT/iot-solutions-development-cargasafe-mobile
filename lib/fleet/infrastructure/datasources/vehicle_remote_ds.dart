@@ -1,5 +1,4 @@
 // infrastructure/datasources/vehicle_remote_ds.dart
-import 'package:dio/dio.dart';
 import '../../domain/entities/vehicle.dart';
 import '../dto/vehicle_dto.dart';
 import '../mappers/vehicle_mapper.dart';
@@ -62,7 +61,9 @@ class VehicleRemoteDataSource {
   }
 
   Future<List<Vehicle>> findByStatus(String statusUpper) async {
-    final res = await api.client.get<List>(api.ep.vehiclesByStatus(statusUpper));
+    final res = await api.client.get<List>(
+      api.ep.vehiclesByStatus(statusUpper),
+    );
     return (res.data ?? [])
         .cast<Map<String, dynamic>>()
         .map(VehicleDto.fromJson)

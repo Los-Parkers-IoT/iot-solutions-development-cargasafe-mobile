@@ -15,7 +15,8 @@ class VehicleCreateEditDialog extends StatefulWidget {
   }
 
   @override
-  State<VehicleCreateEditDialog> createState() => _VehicleCreateEditDialogState();
+  State<VehicleCreateEditDialog> createState() =>
+      _VehicleCreateEditDialogState();
 }
 
 class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
@@ -48,7 +49,13 @@ class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
   @override
   Widget build(BuildContext context) {
     final isEdit = widget.initial != null;
-    const caps = ['REFRIGERATED', 'BOX', 'GPS_ONLY', 'HEAVY_LOAD', 'FRAGILE_CARGO'];
+    const caps = [
+      'REFRIGERATED',
+      'BOX',
+      'GPS_ONLY',
+      'HEAVY_LOAD',
+      'FRAGILE_CARGO',
+    ];
 
     return AlertDialog(
       title: Text(isEdit ? 'Edit Vehicle' : 'Add Vehicle'),
@@ -63,25 +70,36 @@ class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
                 TextFormField(
                   initialValue: plate,
                   decoration: const InputDecoration(labelText: 'Plate'),
-                  validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Required' : null,
                   onSaved: (v) => plate = v!.trim(),
                 ),
                 const SizedBox(height: 8),
                 // ⚠️ usar initialValue en vez de value (deprecado)
                 DropdownButtonFormField<VehicleType>(
-                  initialValue: type,
+                  // initialValue: type,
                   decoration: const InputDecoration(labelText: 'Type'),
                   items: VehicleType.values
-                      .map((t) => DropdownMenuItem(value: t, child: Text(t.name.toUpperCase())))
+                      .map(
+                        (t) => DropdownMenuItem(
+                          value: t,
+                          child: Text(t.name.toUpperCase()),
+                        ),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => type = v ?? type),
                 ),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<VehicleStatus>(
-                  initialValue: status,
+                  // initialValue: status,
                   decoration: const InputDecoration(labelText: 'Status'),
                   items: VehicleStatus.values
-                      .map((s) => DropdownMenuItem(value: s, child: Text(_titleCase(s.name))))
+                      .map(
+                        (s) => DropdownMenuItem(
+                          value: s,
+                          child: Text(_titleCase(s.name)),
+                        ),
+                      )
                       .toList(),
                   onChanged: (v) => setState(() => status = v ?? status),
                 ),
@@ -103,8 +121,10 @@ class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
                       return FilterChip(
                         label: Text(c),
                         selected: sel,
-                        onSelected: (s) =>
-                            setState(() => s ? capabilities.add(c) : capabilities.remove(c)),
+                        onSelected: (s) => setState(
+                          () =>
+                              s ? capabilities.add(c) : capabilities.remove(c),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -122,7 +142,10 @@ class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
         FilledButton(
           onPressed: () {
             if (_form.currentState?.validate() != true) return;
@@ -150,6 +173,8 @@ class _VehicleCreateEditDialogState extends State<VehicleCreateEditDialog> {
     );
   }
 
-  String _titleCase(String s) =>
-      s.split('_').map((p) => p.isEmpty ? '' : '${p[0]}${p.substring(1).toLowerCase()}').join(' ');
+  String _titleCase(String s) => s
+      .split('_')
+      .map((p) => p.isEmpty ? '' : '${p[0]}${p.substring(1).toLowerCase()}')
+      .join(' ');
 }
