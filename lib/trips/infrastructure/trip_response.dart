@@ -49,3 +49,73 @@ class TripResource {
     );
   }
 }
+
+class CreateTripResource {
+  final int driverId;
+  final int deviceId;
+  final int vehicleId;
+  final int merchantId;
+  final int originPointId;
+  final List<CreateTripDeliveryOrderResource> deliveryOrders;
+
+  CreateTripResource({
+    required this.driverId,
+    required this.deviceId,
+    required this.vehicleId,
+    required this.merchantId,
+    required this.originPointId,
+    required this.deliveryOrders,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'driverId': driverId,
+      'deviceId': deviceId,
+      'vehicleId': vehicleId,
+      'merchantId': merchantId,
+      'originPointId': originPointId,
+      'deliveryOrders': deliveryOrders.map((d) => d.toJson()).toList(),
+    };
+  }
+}
+
+class CreateTripDeliveryOrderResource {
+  final String clientEmail;
+  final String address;
+  final double latitude;
+  final double longitude;
+  final int sequenceOrder;
+  final double? maxHumidity;
+  final double? minHumidity;
+  final double? maxTemperature;
+  final double? minTemperature;
+  final double? maxVibration;
+
+  CreateTripDeliveryOrderResource({
+    required this.clientEmail,
+    required this.address,
+    required this.latitude,
+    required this.longitude,
+    required this.sequenceOrder,
+    this.maxHumidity,
+    this.minHumidity,
+    this.maxTemperature,
+    this.minTemperature,
+    this.maxVibration,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'clientEmail': clientEmail,
+      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
+      'sequenceOrder': sequenceOrder,
+      'maxHumidity': maxHumidity,
+      'minHumidity': minHumidity,
+      'maxTemperature': maxTemperature,
+      'minTemperature': minTemperature,
+      'maxVibration': maxVibration,
+    };
+  }
+}
