@@ -28,6 +28,7 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
   String _search = '';
   VehicleStatus? _status;
   VehicleType? _type;
+  String? _capability;
 
   @override
   void initState() {
@@ -40,16 +41,32 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
   Widget build(BuildContext context) {
     final provider = context.watch<FleetProvider>();
 
+    final capabilityOptions = provider.vehicles
+        .expand((v) => v.capabilities)
+        .where((c) => c.trim().isNotEmpty)
+        .toSet()
+        .toList()
+      ..sort();
+
     final rows = provider.vehicles.where((v) {
       final q = _search.toLowerCase();
-      final matchesQ = q.isEmpty ||
-          v.plate.toLowerCase().contains(q) ||
-          v.type.name.toLowerCase().contains(q) ||
-          v.capabilities.any((c) => c.toLowerCase().contains(q)) ||
-          v.deviceImeis.any((i) => i.toLowerCase().contains(q));
+      final matchesQ =
+          _search.isEmpty ||
+              v.plate.toLowerCase().contains(q) ||
+              v.type.name.toLowerCase().contains(q) ||
+              v.capabilities.any((c) => c.toLowerCase().contains(q)) ||
+              v.deviceImeis.any((i) => i.toLowerCase().contains(q));
+
       final matchesStatus = _status == null || v.status == _status;
       final matchesType = _type == null || v.type == _type;
-      return matchesQ && matchesStatus && matchesType;
+
+      final matchesCapability = _capability == null
+          ? true
+          : v.capabilities
+          .map((c) => c.toLowerCase())
+          .contains(_capability!.toLowerCase());
+
+      return matchesQ && matchesStatus && matchesType && matchesCapability;
     }).toList();
 
     final total = provider.vehicles.length;
@@ -99,6 +116,7 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
               right: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  // STATUS
                   DropdownButton<VehicleStatus?>(
                     hint: const Text('All statuses'),
                     value: _status,
@@ -113,6 +131,8 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
                     onChanged: (v) => setState(() => _status = v),
                   ),
                   const SizedBox(width: 8),
+
+                  // TYPE
                   DropdownButton<VehicleType?>(
                     hint: const Text('All types'),
                     value: _type,
@@ -126,6 +146,25 @@ class _VehicleManagementPageState extends State<VehicleManagementPage> {
                         .toList(),
                     onChanged: (v) => setState(() => _type = v),
                   ),
+                  const SizedBox(width: 8),
+
+                  // 👇 NUEVO: CAPABILITY
+                  if (capabilityOptions.isNotEmpty)
+                    DropdownButton<String?>(
+                      hint: const Text('All capabilities'),
+                      value: _capability,
+                      items: <String?>[null, ...capabilityOptions]
+                          .map(
+                            (c) => DropdownMenuItem(
+                          value: c,
+                          child: Text(c ?? 'All capabilities'),
+                        ),
+                      )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() => _capability = value);
+                      },
+                    ),
                 ],
               ),
             ),
