@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../app/layout/main_drawer.dart';
+import '../../../shared/app/layout/main_drawer.dart';
 
 class AppScaffold extends StatelessWidget {
   final String title;
