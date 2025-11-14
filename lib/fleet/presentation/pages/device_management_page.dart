@@ -7,6 +7,7 @@ import '../providers/fleet_provider.dart';
 import '../widgets/device_create_edit_dialog.dart';
 import '../widgets/filters_toolbar.dart';
 import '../styles/fleet_styles.dart';
+import 'package:cargasafe/shared/presentation/widgets/app_scaffold.dart';
 
 class DeviceManagementPage extends StatefulWidget {
   const DeviceManagementPage({super.key});
@@ -34,12 +35,14 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
           (d.vehiclePlate ?? '').toLowerCase().contains(q);
     }).toList();
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('IoT Devices')),
+    return AppScaffold(
+      title: 'IoT Devices',
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final res = await DeviceCreateEditDialog.show(context);
-          if (res != null) await context.read<FleetProvider>().createDevice(res);
+          if (res != null) {
+            await context.read<FleetProvider>().createDevice(res);
+          }
         },
         icon: const Icon(Icons.add),
         label: const Text('Register'),
@@ -62,7 +65,9 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
                   if (v == null) {
                     await context.read<FleetProvider>().loadDevices();
                   } else {
-                    await context.read<FleetProvider>().findDevicesByOnline(v == 'online');
+                    await context
+                        .read<FleetProvider>()
+                        .findDevicesByOnline(v == 'online');
                   }
                 },
               ),
@@ -72,7 +77,10 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
             if (provider.error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text(provider.error!, style: const TextStyle(color: Colors.red)),
+                child: Text(
+                  provider.error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
               ),
             const SizedBox(height: 8),
             Expanded(
@@ -85,7 +93,8 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
                     final d = rows[i];
                     return ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: d.online ? Colors.green : Colors.grey,
+                        backgroundColor:
+                        d.online ? Colors.green : Colors.grey,
                         child: const Icon(Icons.memory, color: Colors.white),
                       ),
                       title: Text(d.imei),
@@ -95,20 +104,31 @@ class _DeviceManagementPageState extends State<DeviceManagementPage> {
                         children: [
                           IconButton(
                             icon: const Icon(Icons.visibility),
-                            onPressed: () => context.push('/fleet/devices/${d.id}'),
+                            onPressed: () =>
+                                context.push('/fleet/devices/${d.id}'),
                           ),
                           IconButton(
                             icon: const Icon(Icons.edit),
                             onPressed: () async {
-                              final next = await DeviceCreateEditDialog.show(context, initial: d);
-                              if (next != null) await context.read<FleetProvider>().updateDevice(next);
+                              final next =
+                              await DeviceCreateEditDialog.show(
+                                context,
+                                initial: d,
+                              );
+                              if (next != null) {
+                                await context
+                                    .read<FleetProvider>()
+                                    .updateDevice(next);
+                              }
                             },
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: (d.id == null)
                                 ? null
-                                : () async => context.read<FleetProvider>().deleteDevice(d.id!),
+                                : () async => context
+                                .read<FleetProvider>()
+                                .deleteDevice(d.id!),
                           ),
                         ],
                       ),
