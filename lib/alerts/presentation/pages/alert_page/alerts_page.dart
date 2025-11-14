@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cargasafe/alerts/presentation/widgets/alerts_card.dart';
 import 'package:cargasafe/alerts/presentation/widgets/alert_table.dart';
+import 'package:cargasafe/alerts/application/alert_bloc.dart';
+import 'package:cargasafe/alerts/application/alert_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cargasafe/shared/presentation/theme/app_colors.dart';
 
 class AlertsPage extends StatelessWidget {
@@ -73,8 +76,15 @@ class AlertsPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Tabla
-            const Expanded(child: AlertTable()),
+            Expanded(
+              child: BlocBuilder<AlertBloc, AlertState>(
+                builder: (context, state) {
+                  return AlertTable(
+                    alerts: state.alerts, 
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

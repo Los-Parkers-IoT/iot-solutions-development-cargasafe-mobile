@@ -1,3 +1,4 @@
+import 'package:cargasafe/alerts/application/alert_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -43,6 +44,12 @@ import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicle_by_pl
 import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicles_by_type.dart';
 import 'package:cargasafe/fleet/application/usecases/vehicles/find_vehicles_by_status.dart';
 
+// ================= ALERTS =================
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cargasafe/alerts/application/alert_event.dart';
+import 'package:cargasafe/alerts/infrastructure/alert_api.dart';
+
 final List<SingleChildWidget> appProviders = [
   // DASHBOARD
   ChangeNotifierProvider<DashboardProvider>(
@@ -51,6 +58,16 @@ final List<SingleChildWidget> appProviders = [
       final dashboardRepo = DashboardRepository(remoteDataSource: dashboardDS);
       final dashboardService = DashboardService(repository: dashboardRepo);
       return DashboardProvider(service: dashboardService);
+    },
+  ),
+
+  // ===== ALERTS =====
+  BlocProvider<AlertBloc>(
+    create: (context) {
+      final alertsApi = AlertsApi();
+      final bloc = AlertBloc(alertsApi)
+        ..add(LoadAlerts());
+      return bloc;
     },
   ),
 
