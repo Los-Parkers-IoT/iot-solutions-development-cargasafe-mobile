@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "month": "Enero",
+    "year": 2024,
+    "temperatureIncidents": 6,
+    "movementIncidents": 4,
+    "totalIncidents": 10
+  },
+  {
+    "id": "2",
+    "month": "Febrero",
+    "year": 2024,
+    "temperatureIncidents": 4,
+    "movementIncidents": 6,
+    "totalIncidents": 10
+  },
+  {
+    "id": "3",
+    "month": "Marzo",
+    "year": 2024,
+    "temperatureIncidents": 8,
+    "movementIncidents": 3,
+    "totalIncidents": 11
+  },
+  {
+    "id": "4",
+    "month": "Abril",
+    "year": 2024,
+    "temperatureIncidents": 5,
+    "movementIncidents": 5,
+    "totalIncidents": 10
+  },
+  {
+    "id": "5",
+    "month": "Mayo",
+    "year": 2024,
+    "temperatureIncidents": 7,
+    "movementIncidents": 4,
+    "totalIncidents": 11
+  },
+  {
+    "id": "6",
+    "month": "Junio",
+    "year": 2024,
+    "temperatureIncidents": 3,
+    "movementIncidents": 8,
+    "totalIncidents": 11
+  },
+  {
+    "id": "7",
+    "month": "Julio",
+    "year": 2024,
+    "temperatureIncidents": 6,
+    "movementIncidents": 6,
+    "totalIncidents": 12
+  },
+  {
+    "id": "8",
+    "month": "Agosto",
+    "year": 2024,
+    "temperatureIncidents": 4,
+    "movementIncidents": 7,
+    "totalIncidents": 11
+  },
+  {
+    "id": "9",
+    "month": "Septiembre",
+    "year": 2024,
+    "temperatureIncidents": 9,
+    "movementIncidents": 2,
+    "totalIncidents": 11
+  },
+  {
+    "id": "10",
+    "month": "Octubre",
+    "year": 2024,
+    "temperatureIncidents": 5,
+    "movementIncidents": 7,
+    "totalIncidents": 12
+  }
+]

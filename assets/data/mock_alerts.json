@@ -1,0 +1,144 @@
+[
+  {
+    "id": "alert-1",
+    "tripId": "1",
+    "deviceId": "IOT-001",
+    "vehiclePlate": "ABC-123",
+    "type": "TEMPERATURE",
+    "severity": "HIGH",
+    "timestamp": "2024-10-01T12:30:00.000Z",
+    "location": {
+      "latitude": -16.409,
+      "longitude": -71.5375,
+      "address": "Carretera Panamericana Sur, Arequipa"
+    },
+    "sensorData": {
+      "temperature": 12.5,
+      "timestamp": "2024-10-01T12:30:00.000Z"
+    },
+    "resolved": true
+  },
+  {
+    "id": "alert-2",
+    "tripId": "2",
+    "deviceId": "IOT-002",
+    "vehiclePlate": "DEF-456",
+    "type": "MOVEMENT",
+    "severity": "MEDIUM",
+    "timestamp": "2024-10-02T10:15:00.000Z",
+    "location": {
+      "latitude": -8.1116,
+      "longitude": -79.029,
+      "address": "Carretera Panamericana Norte, La Libertad"
+    },
+    "sensorData": {
+      "movement": {
+        "acceleration": {
+          "x": 2.5,
+          "y": 1.8,
+          "z": 3.2
+        },
+        "intensity": 7.5
+      },
+      "timestamp": "2024-10-02T10:15:00.000Z"
+    },
+    "resolved": true
+  },
+  {
+    "id": "alert-3",
+    "tripId": "3",
+    "deviceId": "IOT-003",
+    "vehiclePlate": "GHI-789",
+    "type": "TEMPERATURE",
+    "severity": "CRITICAL",
+    "timestamp": "2024-10-03T11:45:00.000Z",
+    "location": {
+      "latitude": -12.0464,
+      "longitude": -77.0428,
+      "address": "Lima, Perú"
+    },
+    "sensorData": {
+      "temperature": 18.2,
+      "timestamp": "2024-10-03T11:45:00.000Z"
+    },
+    "resolved": false
+  },
+  {
+    "id": "alert-4",
+    "tripId": "3",
+    "deviceId": "IOT-003",
+    "vehiclePlate": "GHI-789",
+    "type": "HUMIDITY",
+    "severity": "MEDIUM",
+    "timestamp": "2024-10-03T14:20:00.000Z",
+    "location": {
+      "latitude": -12.5464,
+      "longitude": -76.8428,
+      "address": "Carretera Central, Lima"
+    },
+    "sensorData": {
+      "humidity": 78,
+      "timestamp": "2024-10-03T14:20:00.000Z"
+    },
+    "resolved": false
+  },
+  {
+    "id": "alert-5",
+    "tripId": "4",
+    "deviceId": "IOT-004",
+    "vehiclePlate": "JKL-012",
+    "type": "TEMPERATURE",
+    "severity": "LOW",
+    "timestamp": "2024-10-03T15:00:00.000Z",
+    "location": {
+      "latitude": -3.7437,
+      "longitude": -73.2516,
+      "address": "Iquitos, Perú"
+    },
+    "sensorData": {
+      "temperature": 8.5,
+      "timestamp": "2024-10-03T15:00:00.000Z"
+    },
+    "resolved": true
+  },
+  {
+    "id": "alert-6",
+    "tripId": "6",
+    "deviceId": "IOT-006",
+    "vehiclePlate": "PQR-678",
+    "type": "DOOR_OPEN",
+    "severity": "MEDIUM",
+    "timestamp": "2024-10-04T10:00:00.000Z",
+    "location": {
+      "latitude": -17.991,
+      "longitude": -70.2465,
+      "address": "Moquegua, Perú"
+    },
+    "sensorData": {
+      "door": {
+        "status": "OPEN"
+      },
+      "timestamp": "2024-10-04T10:00:00.000Z"
+    },
+    "resolved": false
+  },
+  {
+    "id": "alert-7",
+    "tripId": "6",
+    "deviceId": "IOT-006",
+    "vehiclePlate": "PQR-678",
+    "type": "HUMIDITY",
+    "severity": "HIGH",
+    "timestamp": "2024-10-04T13:15:00.000Z",
+    "location": {
+      "latitude": -17.791,
+      "longitude": -70.1465,
+      "address": "Carretera Panamericana Sur, Tacna"
+    },
+    "sensorData": {
+      "humidity": 85,
+      "timestamp": "2024-10-04T13:15:00.000Z"
+    },
+    "resolved": false
+  }
+]
